@@ -1,0 +1,24 @@
+{
+  "name": "landing-matteo-elisa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page dello studio di sviluppo software Matteo & Elisa — sito statico self-contained.",
+  "type": "module",
+  "scripts": {
+    "dev": "serve src --listen 5173",
+    "build": "node scripts/build.mjs",
+    "preview": "serve dist --listen 4173",
+    "format": "prettier --write \"**/*.{html,css,js,mjs,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{html,css,js,mjs,json,md,yml,yaml}\"",
+    "lint:html": "htmlhint \"src/**/*.html\"",
+    "check": "npm run format:check && npm run lint:html"
+  },
+  "devDependencies": {
+    "htmlhint": "^1.1.4",
+    "prettier": "^3.3.3",
+    "serve": "^14.2.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

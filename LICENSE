@@ -1,0 +1,8 @@
+Copyright (c) 2026 Matteo & Elisa. Tutti i diritti riservati.
+
+Questo repository e il suo contenuto (codice, testi, grafica e asset) sono
+proprietari. Non è concessa alcuna licenza d'uso, copia, modifica o
+distribuzione senza autorizzazione scritta del titolare.
+
+Eccezione: il file `src/dc-runtime.js` è un runtime di terze parti, incluso
+("vendored") così com'è e soggetto alla licenza del rispettivo autore.

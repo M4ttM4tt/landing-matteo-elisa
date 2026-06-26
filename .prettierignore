@@ -1,0 +1,8 @@
+# The site source is a verbatim, self-contained prerender + vendored runtime.
+# Never reformat it — formatting could alter rendering. Treat src/ as generated.
+src/
+dist/
+node_modules/
+
+# Original standalone bundle, kept verbatim for provenance
+reference/
