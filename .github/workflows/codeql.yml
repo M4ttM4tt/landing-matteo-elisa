@@ -26,9 +26,11 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
-          # The vendored runtime (src/dc-runtime.js) is third-party and minified.
-          paths-ignore:
-            - src/dc-runtime.js
+          # Third-party, minified vendored code — exclude from analysis.
+          config: |
+            paths-ignore:
+              - src/dc-runtime.js
+              - src/vendor
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v3
