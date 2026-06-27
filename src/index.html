@@ -1289,9 +1289,20 @@ class Component extends DCLogic {
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -7% 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px 0px 0px' }
     );
     rise.forEach(function (el) { io.observe(el); });
+
+    // In fondo alla pagina rivela ciò che resta (es. il footer): all'estremità
+    // inferiore un elemento può non superare mai la soglia dell'observer.
+    var revealBottom = function () {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        rise.forEach(function (el) { el.classList.add('mep-in'); });
+        window.removeEventListener('scroll', revealBottom);
+      }
+    };
+    window.addEventListener('scroll', revealBottom, { passive: true });
+    revealBottom();
 
     // Sicurezza: rivela tutto solo se IntersectionObserver non è disponibile
     // (così le animazioni scattano allo scroll comunque, a qualsiasi velocità).
