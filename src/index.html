@@ -1082,7 +1082,7 @@ class Component extends DCLogic {
     // Higher-res aurora buffer keeps the background crisp while still cheaper than full-canvas gradients.
     const ab = document.createElement('canvas');
     const abx = ab.getContext('2d');
-    const ASCALE = 0.36;
+    const ASCALE = 0.6;
     const parts = [], stars = [];
     const blobs = [
       { bx:0.20, by:0.28, ph:0, r:340, c:0 },
@@ -1178,55 +1178,49 @@ class Component extends DCLogic {
         sky.addColorStop(0.55, rgba([60,200,170], cc.dark?0.09:0.08));
         sky.addColorStop(1,    rgba([70,235,150], cc.dark?0.06:0.06));
         abx.fillStyle = sky; abx.fillRect(0,0,AW,AH);
-        // vertical curtains of soft natural light rising from a flowing base
-        // (green near the base shifting to teal / blue / purple / pink toward the top)
-        const curtains = [
-          { by:0.90, h:0.84, lo:[80,245,150], hi:[160,95,240], k:cc.dark?0.95:0.62 },
-          { by:0.84, h:0.98, lo:[45,220,190], hi:[125,125,250], k:cc.dark?0.70:0.48 },
-          { by:0.94, h:0.66, lo:[110,245,180], hi:[255,110,190], k:cc.dark?0.56:0.38 }
+        // smooth vertical light-sheets: each is ONE filled gradient with a wavy top
+        // edge. The peaks read as soft aurora rays — no strips, so no seams/lines
+        // on any screen, and full vivid colour (no blur needed).
+        const sheets = [
+          { baseY:0.99, topY:0.24, lo:[80,245,150], hi:[160,95,240],  n:3.0, sp:0.50,  amp:0.11,  k:cc.dark?0.62:0.50 },
+          { baseY:1.00, topY:0.12, lo:[45,222,192], hi:[125,125,250], n:4.3, sp:-0.40, amp:0.14,  k:cc.dark?0.48:0.38 },
+          { baseY:0.99, topY:0.34, lo:[120,248,185],hi:[255,110,190], n:5.6, sp:0.64,  amp:0.085, k:cc.dark?0.38:0.30 },
+          { baseY:1.00, topY:0.06, lo:[60,238,205], hi:[150,110,250], n:2.3, sp:0.30,  amp:0.17,  k:cc.dark?0.44:0.34 }
         ];
-        const w = Math.max(2, Math.round(AW/56));
-        let ci = 0;
-        for (const c of curtains){
-          const ph = ci*2.1;
-          // each curtain pulses in brightness over time -> the aurora "dances"
-          const pulse = 0.74 + 0.26*Math.sin(time*0.36 + ph*1.4);
-          const kk = c.k * pulse;
-          // autonomous vertical sway (alive even with the mouse still)
-          const lift = myN*AH*0.10 + Math.sin(time*0.32 + ph)*AH*0.05;
-          const topY = AH*(c.by - c.h) + lift;
-          const baseMid = AH*c.by + lift;
-          const g = abx.createLinearGradient(0, baseMid, 0, topY);
-          g.addColorStop(0,    rgba(c.lo, 0));
-          g.addColorStop(0.18, rgba(c.lo, kk));
-          g.addColorStop(0.58, rgba(c.hi, kk*0.55));
-          g.addColorStop(1,    rgba(c.hi, 0));
+        const step = Math.max(2, Math.round(AW/130));
+        let si = 0;
+        for (const sh of sheets){
+          const ph = si*1.7;
+          const pulse = 0.70 + 0.30*Math.sin(time*0.40 + ph*1.3);   // dancing intensity
+          const k = sh.k * pulse;
+          const baseY = AH*sh.baseY + myN*AH*0.05;
+          const topBase = AH*sh.topY + myN*AH*0.10;
+          const g = abx.createLinearGradient(0, baseY, 0, topBase);
+          g.addColorStop(0,    rgba(sh.lo, 0));
+          g.addColorStop(0.20, rgba(sh.lo, k));
+          g.addColorStop(0.62, rgba(sh.hi, k*0.7));
+          g.addColorStop(1,    rgba(sh.hi, 0));
           abx.fillStyle = g;
-          for (let x=-w; x<AW+w; x+=w){
+          abx.beginPath();
+          abx.moveTo(-4, baseY+4);
+          for (let x=-4; x<=AW+4; x+=step){
             const u = x/AW;
-            // flowing wavy base — livelier, more dynamic motion
-            const by = baseMid
-              + Math.sin(u*TAU*0.7 + time*0.60 + ph + mxN*2.0)*(AH*0.09)
-              + Math.sin(u*TAU*1.6 - time*0.44 + ph)*(AH*0.045)
-              + Math.sin(u*TAU*2.9 + time*0.80)*(AH*0.024);
-            // soft organic shimmer, flowing faster over time
-            const shimmer = 0.84
-              + 0.10*Math.sin(x*0.013 + time*0.98 + ph)
-              + 0.06*Math.sin(x*0.027 - time*1.50 + ph*1.5)
-              + 0.03*Math.sin(x*0.006 + time*0.55 + mxN*1.2);
-            abx.globalAlpha = shimmer<0?0:(shimmer>1?1:shimmer);
-            abx.fillRect(x, topY, w+3, by-topY);
+            // wavy top edge — several sines give irregular, animated ray peaks
+            const top = topBase
+              + Math.sin(u*TAU*sh.n + time*sh.sp + ph + mxN*1.6)*(AH*sh.amp)
+              + Math.sin(u*TAU*sh.n*2.1 - time*sh.sp*1.3 + ph)*(AH*sh.amp*0.5)
+              + Math.sin(u*TAU*sh.n*0.45 + time*0.28)*(AH*sh.amp*0.45);
+            abx.lineTo(x, top);
           }
-          abx.globalAlpha = 1;
-          ci++;
+          abx.lineTo(AW+4, baseY+4);
+          abx.closePath();
+          abx.fill();
+          si++;
         }
         abx.globalCompositeOperation = 'source-over';
-        // upscale the aurora buffer; a small blur smooths the seams between strips
-        // so it stays soft "natural light" on every screen, not only high-DPR phones
+        // upscale the aurora buffer (smooth filled sheets -> no seams, no blur needed)
         ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-        ctx.filter = 'blur(6px)';
         ctx.drawImage(ab, 0,0,AW,AH, 0,0,W,H);
-        ctx.filter = 'none';
         // light that follows the cursor, melting into the aurora
         if (this._mx!=null){
           const mr = Math.max(W,H)*0.22;
