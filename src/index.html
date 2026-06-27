@@ -1082,7 +1082,7 @@ class Component extends DCLogic {
     // Higher-res aurora buffer keeps the background crisp while still cheaper than full-canvas gradients.
     const ab = document.createElement('canvas');
     const abx = ab.getContext('2d');
-    const ASCALE = 0.45;
+    const ASCALE = 0.36;
     const parts = [], stars = [];
     const blobs = [
       { bx:0.20, by:0.28, ph:0, r:340, c:0 },
@@ -1178,37 +1178,44 @@ class Component extends DCLogic {
         sky.addColorStop(0.55, rgba([60,200,170], cc.dark?0.09:0.08));
         sky.addColorStop(1,    rgba([70,235,150], cc.dark?0.06:0.06));
         abx.fillStyle = sky; abx.fillRect(0,0,AW,AH);
-        // vertical curtains of soft, blended light rising from a wavy base
+        // vertical curtains of soft natural light rising from a flowing base
         // (green near the base shifting to teal / blue / purple / pink toward the top)
         const curtains = [
-          { by:0.88, h:0.80, lo:[70,235,140], hi:[150,90,235], spd:0.18,  pf:0.020, k:cc.dark?0.85:0.55 },
-          { by:0.82, h:0.94, lo:[40,212,182], hi:[120,120,245], spd:-0.13, pf:0.028, k:cc.dark?0.62:0.40 },
-          { by:0.92, h:0.64, lo:[96,240,170], hi:[255,104,182], spd:0.24,  pf:0.037, k:cc.dark?0.5:0.32 }
+          { by:0.90, h:0.84, lo:[70,235,140], hi:[150,90,235], k:cc.dark?0.80:0.50 },
+          { by:0.84, h:0.98, lo:[40,212,182], hi:[120,120,245], k:cc.dark?0.58:0.38 },
+          { by:0.94, h:0.66, lo:[96,240,170], hi:[255,104,182], k:cc.dark?0.46:0.30 }
         ];
-        const w = Math.max(2, Math.round(AW/64));
+        const w = Math.max(2, Math.round(AW/56));
+        let ci = 0;
         for (const c of curtains){
-          const lift = myN*AH*0.11;
+          const ph = ci*2.1;
+          // gentle autonomous vertical breathing (alive even with the mouse still)
+          const lift = myN*AH*0.10 + Math.sin(time*0.24 + ph)*AH*0.035;
           const topY = AH*(c.by - c.h) + lift;
           const baseMid = AH*c.by + lift;
           const g = abx.createLinearGradient(0, baseMid, 0, topY);
           g.addColorStop(0,    rgba(c.lo, 0));
-          g.addColorStop(0.16, rgba(c.lo, c.k));
-          g.addColorStop(0.55, rgba(c.hi, c.k*0.6));
+          g.addColorStop(0.18, rgba(c.lo, c.k));
+          g.addColorStop(0.58, rgba(c.hi, c.k*0.55));
           g.addColorStop(1,    rgba(c.hi, 0));
           abx.fillStyle = g;
-          const drift = Math.sign(c.spd) || 1;
           for (let x=-w; x<AW+w; x+=w){
             const u = x/AW;
-            // gentle horizontal animation underneath (wavy base)
+            // flowing wavy base — several drifting components keep it lively at rest
             const by = baseMid
-              + Math.sin(u*TAU*0.8 + time*0.35 + mxN*2.2)*(AH*0.06)
-              + Math.sin(u*TAU*1.7 - time*0.22)*(AH*0.03);
-            // soft, low-contrast vertical rays (overlapping strips -> no hard lines)
-            const ray = 0.70 + 0.30*Math.sin(x*c.pf + time*0.45*drift + c.spd*5 + mxN*1.5);
-            abx.globalAlpha = ray;
-            abx.fillRect(x, topY, w+2, by-topY);
+              + Math.sin(u*TAU*0.7 + time*0.45 + ph + mxN*2.0)*(AH*0.07)
+              + Math.sin(u*TAU*1.6 - time*0.33 + ph)*(AH*0.035)
+              + Math.sin(u*TAU*2.9 + time*0.60)*(AH*0.018);
+            // very soft, organic shimmer (multi-sine, low contrast) flowing over time
+            const shimmer = 0.84
+              + 0.09*Math.sin(x*0.013 + time*0.70 + ph)
+              + 0.05*Math.sin(x*0.027 - time*1.10 + ph*1.5)
+              + 0.03*Math.sin(x*0.006 + time*0.40 + mxN*1.2);
+            abx.globalAlpha = shimmer<0?0:(shimmer>1?1:shimmer);
+            abx.fillRect(x, topY, w+3, by-topY);
           }
           abx.globalAlpha = 1;
+          ci++;
         }
         abx.globalCompositeOperation = 'source-over';
         // upscale the aurora buffer with browser smoothing for a clean, blended result
