@@ -1181,36 +1181,39 @@ class Component extends DCLogic {
         // vertical curtains of soft natural light rising from a flowing base
         // (green near the base shifting to teal / blue / purple / pink toward the top)
         const curtains = [
-          { by:0.90, h:0.84, lo:[70,235,140], hi:[150,90,235], k:cc.dark?0.80:0.50 },
-          { by:0.84, h:0.98, lo:[40,212,182], hi:[120,120,245], k:cc.dark?0.58:0.38 },
-          { by:0.94, h:0.66, lo:[96,240,170], hi:[255,104,182], k:cc.dark?0.46:0.30 }
+          { by:0.90, h:0.84, lo:[80,245,150], hi:[160,95,240], k:cc.dark?0.95:0.62 },
+          { by:0.84, h:0.98, lo:[45,220,190], hi:[125,125,250], k:cc.dark?0.70:0.48 },
+          { by:0.94, h:0.66, lo:[110,245,180], hi:[255,110,190], k:cc.dark?0.56:0.38 }
         ];
         const w = Math.max(2, Math.round(AW/56));
         let ci = 0;
         for (const c of curtains){
           const ph = ci*2.1;
-          // gentle autonomous vertical breathing (alive even with the mouse still)
-          const lift = myN*AH*0.10 + Math.sin(time*0.24 + ph)*AH*0.035;
+          // each curtain pulses in brightness over time -> the aurora "dances"
+          const pulse = 0.74 + 0.26*Math.sin(time*0.36 + ph*1.4);
+          const kk = c.k * pulse;
+          // autonomous vertical sway (alive even with the mouse still)
+          const lift = myN*AH*0.10 + Math.sin(time*0.32 + ph)*AH*0.05;
           const topY = AH*(c.by - c.h) + lift;
           const baseMid = AH*c.by + lift;
           const g = abx.createLinearGradient(0, baseMid, 0, topY);
           g.addColorStop(0,    rgba(c.lo, 0));
-          g.addColorStop(0.18, rgba(c.lo, c.k));
-          g.addColorStop(0.58, rgba(c.hi, c.k*0.55));
+          g.addColorStop(0.18, rgba(c.lo, kk));
+          g.addColorStop(0.58, rgba(c.hi, kk*0.55));
           g.addColorStop(1,    rgba(c.hi, 0));
           abx.fillStyle = g;
           for (let x=-w; x<AW+w; x+=w){
             const u = x/AW;
-            // flowing wavy base — several drifting components keep it lively at rest
+            // flowing wavy base — livelier, more dynamic motion
             const by = baseMid
-              + Math.sin(u*TAU*0.7 + time*0.45 + ph + mxN*2.0)*(AH*0.07)
-              + Math.sin(u*TAU*1.6 - time*0.33 + ph)*(AH*0.035)
-              + Math.sin(u*TAU*2.9 + time*0.60)*(AH*0.018);
-            // very soft, organic shimmer (multi-sine, low contrast) flowing over time
+              + Math.sin(u*TAU*0.7 + time*0.60 + ph + mxN*2.0)*(AH*0.09)
+              + Math.sin(u*TAU*1.6 - time*0.44 + ph)*(AH*0.045)
+              + Math.sin(u*TAU*2.9 + time*0.80)*(AH*0.024);
+            // soft organic shimmer, flowing faster over time
             const shimmer = 0.84
-              + 0.09*Math.sin(x*0.013 + time*0.70 + ph)
-              + 0.05*Math.sin(x*0.027 - time*1.10 + ph*1.5)
-              + 0.03*Math.sin(x*0.006 + time*0.40 + mxN*1.2);
+              + 0.10*Math.sin(x*0.013 + time*0.98 + ph)
+              + 0.06*Math.sin(x*0.027 - time*1.50 + ph*1.5)
+              + 0.03*Math.sin(x*0.006 + time*0.55 + mxN*1.2);
             abx.globalAlpha = shimmer<0?0:(shimmer>1?1:shimmer);
             abx.fillRect(x, topY, w+3, by-topY);
           }
