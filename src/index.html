@@ -1082,7 +1082,7 @@ class Component extends DCLogic {
     // Higher-res aurora buffer keeps the background crisp while still cheaper than full-canvas gradients.
     const ab = document.createElement('canvas');
     const abx = ab.getContext('2d');
-    const ASCALE = 0.38;
+    const ASCALE = 0.55;
     const parts = [], stars = [];
     const blobs = [
       { bx:0.20, by:0.28, ph:0, r:340, c:0 },
@@ -1165,52 +1165,42 @@ class Component extends DCLogic {
         }
       }
       else if (style==='aurora'){
-        const aur = [[58,232,150],[40,200,255],[96,150,255],[168,96,255],[255,92,172]];
-        const NC = 5;
-        const baseA = cc.dark ? 0.62 : 0.55;
         const AW = ab.width, AH = ab.height, s = ASCALE;
-        const baseY_i = (i) => AH*(0.10 + i*0.155);
-        // wave in low-res buffer space (frequencies divided by scale to keep the same shape)
-        const wave = (x,i,dir,amp) => baseY_i(i)
-          + Math.sin(x*(0.0040/s) + time*0.40*dir + i*1.2)*amp
-          + Math.sin(x*(0.0092/s) - time*0.28 + i)*amp*0.5
-          + Math.sin(x*(0.018/s) + time*0.55 + i)*amp*0.22;
+        const TAU = Math.PI*2;
         abx.clearRect(0,0,AW,AH);
         abx.globalCompositeOperation = cc.dark ? 'lighter' : 'source-over';
-        // background wash so the colours melt together
-        const bgw = abx.createLinearGradient(0,0,0,AH);
-        bgw.addColorStop(0, rgba(aur[3], cc.dark?0.16:0.14));
-        bgw.addColorStop(0.5, rgba(aur[0], cc.dark?0.13:0.12));
-        bgw.addColorStop(1, rgba(aur[1], cc.dark?0.06:0.05));
-        abx.fillStyle = bgw; abx.fillRect(0,0,AW,AH);
-        // overlapping flowing curtains
-        for (let i=0;i<NC;i++){
-          const col = aur[i];
-          const amp = (58 + i*14)*s, thick = (180 + i*32)*s, dir = i%2===0?1:-1;
-          abx.beginPath();
-          const step = Math.max(1, Math.round(2*s));
-          for (let x=0;x<=AW;x+=step){ const y=wave(x,i,dir,amp); x===0?abx.moveTo(x,y):abx.lineTo(x,y); }
-          for (let x=AW;x>=0;x-=step){ const y=wave(x,i,dir,amp)+thick; abx.lineTo(x,y); }
-          abx.closePath();
-          const by = baseY_i(i);
-          const g = abx.createLinearGradient(0, by-amp, 0, by+amp+thick);
-          g.addColorStop(0, rgba(col,0));
-          g.addColorStop(0.5, rgba(col, baseA));
-          g.addColorStop(1, rgba(col,0));
-          abx.fillStyle = g; abx.fill();
-        }
-        // vertical shimmer ribs woven through
-        for (let i=0;i<NC;i++){
-          const col = aur[i];
-          const amp = (58 + i*14)*s, thick = (180 + i*32)*s, dir = i%2===0?1:-1;
-          for (let rx=0; rx<AW; rx+=Math.max(4, AW/14)){
-            const x = rx + Math.sin(time*0.5 + rx*0.05 + i)*(22*s);
-            const yTop = wave(x,i,dir,amp);
-            const rg = abx.createLinearGradient(0, yTop-3, 0, yTop+thick*1.15);
-            rg.addColorStop(0, rgba(col, (cc.dark?0.22:0.18)));
-            rg.addColorStop(1, rgba(col, 0));
-            abx.fillStyle = rg; abx.fillRect(x-(11*s), yTop-3, 22*s, thick*1.15+3);
+        // soft sky wash, deeper at the top
+        const sky = abx.createLinearGradient(0,0,0,AH);
+        sky.addColorStop(0,    rgba([120,90,210], cc.dark?0.14:0.11));
+        sky.addColorStop(0.55, rgba([60,200,170], cc.dark?0.09:0.08));
+        sky.addColorStop(1,    rgba([64,232,150], cc.dark?0.05:0.05));
+        abx.fillStyle = sky; abx.fillRect(0,0,AW,AH);
+        // hanging curtains: wavy lower edge, vertical rays that rise and fade upward,
+        // green near the base shifting to teal/purple/pink toward the top
+        const curtains = [
+          { by:0.82, h:0.72, a:96,  spd:0.22,  f1:0.7, f2:1.9, lo:[70,235,140], hi:[150,90,235], k:cc.dark?0.95:0.60 },
+          { by:0.74, h:0.88, a:128, spd:-0.16, f1:0.5, f2:1.4, lo:[40,212,182], hi:[120,120,245], k:cc.dark?0.72:0.45 },
+          { by:0.88, h:0.56, a:74,  spd:0.31,  f1:1.1, f2:2.7, lo:[96,240,170], hi:[255,104,182], k:cc.dark?0.55:0.34 }
+        ];
+        for (const c of curtains){
+          const topY = AH*(c.by - c.h);
+          const g = abx.createLinearGradient(0, AH*c.by, 0, topY);
+          g.addColorStop(0,    rgba(c.lo, 0));
+          g.addColorStop(0.14, rgba(c.lo, c.k));
+          g.addColorStop(0.55, rgba(c.hi, c.k*0.6));
+          g.addColorStop(1,    rgba(c.hi, 0));
+          abx.fillStyle = g;
+          const w = Math.max(2, Math.round(AW/110));
+          for (let x=0; x<AW; x+=w){
+            const by = AH*c.by
+              + Math.sin(x*(c.f1*TAU/AW) + time*c.spd)*(c.a*s)
+              + Math.sin(x*(c.f2*TAU/AW) - time*c.spd*0.7)*(c.a*0.42*s);
+            // vertical "pleats": rays of varying brightness drifting sideways
+            const pleat = 0.30 + 0.70*Math.pow(Math.abs(Math.sin(x*0.07 + time*0.55 + c.spd*6)), 1.7);
+            abx.globalAlpha = pleat;
+            abx.fillRect(x, topY, w+1, by-topY);
           }
+          abx.globalAlpha = 1;
         }
         abx.globalCompositeOperation = 'source-over';
         // upscale the aurora buffer with browser smoothing for a clean, blended result
