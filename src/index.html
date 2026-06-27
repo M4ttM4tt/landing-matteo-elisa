@@ -83,6 +83,22 @@
   }
 }
 </style>
+<style>
+/* === Scroll "a sezioni": aggancio dolce all'inizio di ogni sezione ===
+   proximity (non mandatory) per non intrappolare le sezioni più alte della
+   schermata; attivo solo da 768px in su (su mobile le sezioni impilate sono
+   troppo alte e lo snap risulterebbe fastidioso). Lo scroll-margin-top già
+   presente sulle sezioni tiene conto della nav fissa. */
+@media (min-width: 768px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  main > section,
+  footer {
+    scroll-snap-align: start;
+  }
+}
+</style>
 <script src="./vendor/react.production.min.js"></script>
 <script src="./vendor/react-dom.production.min.js"></script>
 <script src="./dc-runtime.js"></script>
