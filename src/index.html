@@ -54,6 +54,24 @@
   }
 }
 </style>
+<style>
+/* === Animazioni allo scroll (additive; disattivate con prefers-reduced-motion) === */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .mep-rise {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 0.8, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 0.8, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .mep-rise.mep-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+</style>
 <script src="./vendor/react.production.min.js"></script>
 <script src="./vendor/react-dom.production.min.js"></script>
 <script src="./dc-runtime.js"></script>
@@ -1094,5 +1112,68 @@ class Component extends DCLogic {
 }
 </script>
 
+<script>
+/* Livello di animazione allo scroll — additivo, non modifica il componente.
+   Dà un'entrata granulare e sfalsata ai contenuti man mano che entrano nel
+   viewport, senza interferire con il reveal a blocchi già presente. */
+(function () {
+  'use strict';
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function whenReady(cb) {
+    var n = 0;
+    (function poll() {
+      // Attende che il runtime abbia rimosso il template <x-dc> e montato
+      // l'albero React reale: solo allora i nodi sono quelli definitivi.
+      if (!document.querySelector('x-dc') && document.querySelector('[data-reveal][data-stagger]')) {
+        return cb();
+      }
+      if (n++ > 90) return; // ~10s, poi rinuncia (lascia tutto visibile)
+      setTimeout(poll, 110);
+    })();
+  }
+
+  function enhance() {
+    var rise = [];
+
+    // Per ogni contenitore già "rivelabile", sfalsa l'entrata dei figli diretti
+    // (etichette, titoli, paragrafi, righe delle card…), saltando ciò che ha
+    // già un proprio data-reveal per non animarlo due volte.
+    document.querySelectorAll('[data-reveal]').forEach(function (container) {
+      var i = 0;
+      Array.prototype.forEach.call(container.children, function (el) {
+        if (el.hasAttribute('data-reveal') || el.dataset.mepRise) return;
+        el.dataset.mepRise = '1';
+        el.classList.add('mep-rise');
+        el.style.transitionDelay = i * 75 + 'ms';
+        i++;
+        rise.push(el);
+      });
+    });
+
+    if (!rise.length) return;
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('mep-in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -7% 0px' }
+    );
+    rise.forEach(function (el) { io.observe(el); });
+
+    // Sicurezza: non lasciare mai nulla nascosto.
+    setTimeout(function () {
+      rise.forEach(function (el) { el.classList.add('mep-in'); });
+    }, 3500);
+  }
+
+  whenReady(enhance);
+})();
+</script>
 
 </body></html>
