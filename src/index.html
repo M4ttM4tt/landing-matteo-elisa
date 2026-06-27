@@ -1165,42 +1165,48 @@ class Component extends DCLogic {
         }
       }
       else if (style==='aurora'){
+        const aur = [[64,235,140],[40,212,196],[90,150,245],[168,96,235],[255,104,182]];
+        const NC = 5;
+        const baseA = cc.dark ? 0.72 : 0.55;
         const AW = ab.width, AH = ab.height, s = ASCALE;
         const TAU = Math.PI*2;
+        // mouse influence: X slides the curtains sideways (parallax) and a soft swell
+        // follows the cursor; Y raises/lowers the whole aurora
+        const mxN = this._mx!=null ? (this._mx/W - 0.5) : 0;
+        const myN = this._my!=null ? (this._my/H - 0.5) : 0;
+        const baseY_i = (i) => AH*(0.16 + i*0.155) + myN*AH*0.12;
+        const wave = (x,i,dir,amp) => {
+          const u = x/AW;
+          const dxm = u - (0.5 + mxN*0.9);
+          const swell = Math.exp(-(dxm*dxm)/0.03) * AH * 0.12;   // a gentle peak follows the cursor
+          return baseY_i(i)
+            + Math.sin(u*TAU*(1.0+i*0.22) + time*0.5*dir + mxN*2.6)*amp
+            + Math.sin(u*TAU*(2.1+i*0.18) - time*0.32 + i)*amp*0.5
+            - swell;
+        };
         abx.clearRect(0,0,AW,AH);
         abx.globalCompositeOperation = cc.dark ? 'lighter' : 'source-over';
-        // soft sky wash, deeper at the top
-        const sky = abx.createLinearGradient(0,0,0,AH);
-        sky.addColorStop(0,    rgba([120,90,210], cc.dark?0.14:0.11));
-        sky.addColorStop(0.55, rgba([60,200,170], cc.dark?0.09:0.08));
-        sky.addColorStop(1,    rgba([64,232,150], cc.dark?0.05:0.05));
-        abx.fillStyle = sky; abx.fillRect(0,0,AW,AH);
-        // hanging curtains: wavy lower edge, vertical rays that rise and fade upward,
-        // green near the base shifting to teal/purple/pink toward the top
-        const curtains = [
-          { by:0.82, h:0.72, a:96,  spd:0.22,  f1:0.7, f2:1.9, lo:[70,235,140], hi:[150,90,235], k:cc.dark?0.95:0.60 },
-          { by:0.74, h:0.88, a:128, spd:-0.16, f1:0.5, f2:1.4, lo:[40,212,182], hi:[120,120,245], k:cc.dark?0.72:0.45 },
-          { by:0.88, h:0.56, a:74,  spd:0.31,  f1:1.1, f2:2.7, lo:[96,240,170], hi:[255,104,182], k:cc.dark?0.55:0.34 }
-        ];
-        for (const c of curtains){
-          const topY = AH*(c.by - c.h);
-          const g = abx.createLinearGradient(0, AH*c.by, 0, topY);
-          g.addColorStop(0,    rgba(c.lo, 0));
-          g.addColorStop(0.14, rgba(c.lo, c.k));
-          g.addColorStop(0.55, rgba(c.hi, c.k*0.6));
-          g.addColorStop(1,    rgba(c.hi, 0));
-          abx.fillStyle = g;
-          const w = Math.max(2, Math.round(AW/110));
-          for (let x=0; x<AW; x+=w){
-            const by = AH*c.by
-              + Math.sin(x*(c.f1*TAU/AW) + time*c.spd)*(c.a*s)
-              + Math.sin(x*(c.f2*TAU/AW) - time*c.spd*0.7)*(c.a*0.42*s);
-            // vertical "pleats": rays of varying brightness drifting sideways
-            const pleat = 0.30 + 0.70*Math.pow(Math.abs(Math.sin(x*0.07 + time*0.55 + c.spd*6)), 1.7);
-            abx.globalAlpha = pleat;
-            abx.fillRect(x, topY, w+1, by-topY);
-          }
-          abx.globalAlpha = 1;
+        // background wash so the colours melt together
+        const bgw = abx.createLinearGradient(0,0,0,AH);
+        bgw.addColorStop(0, rgba(aur[3], cc.dark?0.18:0.14));
+        bgw.addColorStop(0.5, rgba(aur[0], cc.dark?0.14:0.12));
+        bgw.addColorStop(1, rgba(aur[1], cc.dark?0.06:0.05));
+        abx.fillStyle = bgw; abx.fillRect(0,0,AW,AH);
+        // horizontal flowing curtains (no vertical striations)
+        for (let i=0;i<NC;i++){
+          const col = aur[i];
+          const amp = (74 + i*16)*s, thick = (150 + i*30)*s, dir = i%2===0?1:-1;
+          abx.beginPath();
+          const step = Math.max(1, Math.round(2*s));
+          for (let x=0;x<=AW;x+=step){ const y=wave(x,i,dir,amp); x===0?abx.moveTo(x,y):abx.lineTo(x,y); }
+          for (let x=AW;x>=0;x-=step){ const y=wave(x,i,dir,amp)+thick; abx.lineTo(x,y); }
+          abx.closePath();
+          const by = baseY_i(i);
+          const g = abx.createLinearGradient(0, by-amp, 0, by+amp+thick);
+          g.addColorStop(0, rgba(col,0));
+          g.addColorStop(0.5, rgba(col, baseA));
+          g.addColorStop(1, rgba(col,0));
+          abx.fillStyle = g; abx.fill();
         }
         abx.globalCompositeOperation = 'source-over';
         // upscale the aurora buffer with browser smoothing for a clean, blended result
