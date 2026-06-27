@@ -1064,10 +1064,10 @@ class Component extends DCLogic {
     let N = reduce ? 26 : (counts[motion] || 60);
     const spd = reduce ? 0.12 : (speeds[motion] || 0.34);
     let W=0, H=0, dpr=Math.min(2, window.devicePixelRatio||1);
-    // low-res offscreen buffer for the aurora — upscaling it gives a cheap, smooth blur (no per-frame filter)
+    // Higher-res aurora buffer keeps the background crisp while still cheaper than full-canvas gradients.
     const ab = document.createElement('canvas');
     const abx = ab.getContext('2d');
-    const ASCALE = 0.11;
+    const ASCALE = 0.38;
     const parts = [], stars = [];
     const blobs = [
       { bx:0.20, by:0.28, ph:0, r:340, c:0 },
@@ -1173,8 +1173,9 @@ class Component extends DCLogic {
           const col = aur[i];
           const amp = (58 + i*14)*s, thick = (180 + i*32)*s, dir = i%2===0?1:-1;
           abx.beginPath();
-          for (let x=0;x<=AW;x+=2){ const y=wave(x,i,dir,amp); x===0?abx.moveTo(x,y):abx.lineTo(x,y); }
-          for (let x=AW;x>=0;x-=2){ const y=wave(x,i,dir,amp)+thick; abx.lineTo(x,y); }
+          const step = Math.max(1, Math.round(2*s));
+          for (let x=0;x<=AW;x+=step){ const y=wave(x,i,dir,amp); x===0?abx.moveTo(x,y):abx.lineTo(x,y); }
+          for (let x=AW;x>=0;x-=step){ const y=wave(x,i,dir,amp)+thick; abx.lineTo(x,y); }
           abx.closePath();
           const by = baseY_i(i);
           const g = abx.createLinearGradient(0, by-amp, 0, by+amp+thick);
@@ -1197,7 +1198,7 @@ class Component extends DCLogic {
           }
         }
         abx.globalCompositeOperation = 'source-over';
-        // upscale the tiny buffer -> smooth, blended, cheap blur
+        // upscale the aurora buffer with browser smoothing for a clean, blended result
         ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(ab, 0,0,AW,AH, 0,0,W,H);
         // light that follows the cursor, melting into the aurora
