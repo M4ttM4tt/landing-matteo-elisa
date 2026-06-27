@@ -792,8 +792,8 @@
         </div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:54px">
           <sc-for list="{{ steps }}" as="step" hint-placeholder-count="4">
-            <div data-reveal="" data-stagger="" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);position:relative;padding-top:28px;border-top:2px solid var(--line)">
-              <div style="position:absolute;top:-2px;left:0;width:40%;height:2px;background:var(--accent)"></div>
+            <div data-reveal="" data-stagger="" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:30px;box-shadow:var(--shadow);backdrop-filter:blur(8px);position:relative;overflow:hidden">
+              <div style="position:absolute;top:0;left:0;width:42%;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div>
               <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent)">{{ step.n }}</span>
               <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:22px;margin:12px 0 0;color:var(--fg)">{{ step.title }}</h3>
               <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.55;margin:10px 0 0">{{ step.desc }}</p>
@@ -1000,10 +1000,12 @@ class Component extends DCLogic {
       });
     }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
     els.forEach(el => this._io.observe(el));
-    // safety fallback
-    this._fb = setTimeout(() => {
+    // Fallback solo se IntersectionObserver non è disponibile: niente reveal a
+    // tempo, che altrimenti mostrerebbe in blocco tutto ciò che sta sotto la
+    // prima schermata prima ancora di scrollarci (uccidendo le animazioni).
+    if (!('IntersectionObserver' in window)) {
       els.forEach(el => { el.style.opacity='1'; el.style.transform='none'; });
-    }, 2600);
+    }
   }
 
   initScrollAndMouse(){
@@ -1291,10 +1293,11 @@ class Component extends DCLogic {
     );
     rise.forEach(function (el) { io.observe(el); });
 
-    // Sicurezza: non lasciare mai nulla nascosto.
-    setTimeout(function () {
+    // Sicurezza: rivela tutto solo se IntersectionObserver non è disponibile
+    // (così le animazioni scattano allo scroll comunque, a qualsiasi velocità).
+    if (!('IntersectionObserver' in window)) {
       rise.forEach(function (el) { el.classList.add('mep-in'); });
-    }, 3500);
+    }
   }
 
   whenReady(enhance);
