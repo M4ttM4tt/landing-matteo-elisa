@@ -60,20 +60,25 @@
   html { scroll-behavior: smooth; }
   .mep-rise {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(34px);
     transition:
-      opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
-      transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+      opacity 2.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 2.2s cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: opacity, transform;
   }
   .mep-rise.mep-in {
     opacity: 1;
     transform: none;
   }
-  /* Reveal a blocchi del componente — più lento e morbido.
-     Escludo le card ([data-stagger]) per non rallentarne gli hover. */
+  /* Reveal a blocchi del componente (titoli, hero, CTA, footer) — molto più lento. */
   [data-reveal]:not([data-stagger]) {
-    transition-duration: 1.3s !important;
+    transition-duration: 2.4s !important;
+    transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1) !important;
+  }
+  /* Card: fade lento, ma scorrimento ed hover rapidi (transform corto). */
+  [data-reveal][data-stagger] {
+    transition-property: opacity, transform !important;
+    transition-duration: 2.2s, 0.6s !important;
     transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1) !important;
   }
 }
@@ -1278,7 +1283,7 @@ class Component extends DCLogic {
         if (el.hasAttribute('data-reveal') || el.dataset.mepRise) return;
         el.dataset.mepRise = '1';
         el.classList.add('mep-rise');
-        el.style.transitionDelay = i * 95 + 'ms';
+        el.style.transitionDelay = i * 120 + 'ms';
         i++;
         rise.push(el);
       });
