@@ -100,18 +100,12 @@
 }
 </style>
 <style>
-/* Box/card sempre bianchi con testo scuro (come il tema chiaro), in OGNI tema:
-   ridefinisco le variabili solo sugli elementi-card (quelli con var(--card));
-   l'accento del tema (--accent) resta intatto, e i testi della pagina fuori
-   dalle card continuano a usare i colori del tema. */
+/* Card "vetro smerigliato": restano traslucide (con i colori/testo del tema) ma
+   si STACCANO dallo sfondo perché sfocano il fondo (aurora) dietro di loro. In
+   tema chiaro le card sono opache, quindi la sfocatura è invisibile e innocua. */
 [style*="var(--card)"] {
-  --card: #ffffff;
-  --surface: #faf9f6;
-  --cardBorder: rgba(22, 17, 12, 0.1);
-  --line: rgba(22, 17, 12, 0.08);
-  --shadow: 0 1px 2px rgba(22, 17, 12, 0.04), 0 28px 60px -32px rgba(22, 17, 12, 0.22);
-  --fg: #16110b;
-  --muted: #6c6557;
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
 }
 </style>
 <script src="./vendor/react.production.min.js"></script>
@@ -921,19 +915,19 @@ class Component extends DCLogic {
 
   themes = {
     neon: {
-      bg:'#0a0710', navBg:'rgba(10,7,16,0.62)', surface:'rgba(255,255,255,0.025)',
-      card:'rgba(255,255,255,0.035)', cardBorder:'rgba(177,76,255,0.18)',
+      bg:'#0a0710', navBg:'rgba(10,7,16,0.62)', surface:'rgba(255,255,255,0.045)',
+      card:'rgba(255,255,255,0.07)', cardBorder:'rgba(255,255,255,0.15)',
       fg:'#f4eefc', muted:'#9c90b4', accent:'#b14cff', accent2:'#ff3ea5',
       onAccent:'#160a22', line:'rgba(177,76,255,0.13)', glow:'rgba(177,76,255,0.45)',
-      shadow:'0 0 0 1px rgba(255,255,255,0.03), 0 30px 70px -34px rgba(0,0,0,0.85)',
+      shadow:'0 0 0 1px rgba(255,255,255,0.06), 0 26px 60px -28px rgba(0,0,0,0.9)',
       dark:true, particle:'#b14cff'
     },
     coral: {
-      bg:'#0d0908', navBg:'rgba(13,9,8,0.62)', surface:'rgba(255,255,255,0.025)',
-      card:'rgba(255,255,255,0.032)', cardBorder:'rgba(255,107,84,0.2)',
+      bg:'#0d0908', navBg:'rgba(13,9,8,0.62)', surface:'rgba(255,255,255,0.045)',
+      card:'rgba(255,255,255,0.07)', cardBorder:'rgba(255,255,255,0.15)',
       fg:'#f6efe9', muted:'#b3a298', accent:'#ff6b54', accent2:'#ffb27a',
       onAccent:'#1a0d08', line:'rgba(255,107,84,0.13)', glow:'rgba(255,107,84,0.4)',
-      shadow:'0 0 0 1px rgba(255,255,255,0.03), 0 30px 70px -34px rgba(0,0,0,0.82)',
+      shadow:'0 0 0 1px rgba(255,255,255,0.06), 0 26px 60px -28px rgba(0,0,0,0.9)',
       dark:true, particle:'#ff6b54'
     },
     light: {
