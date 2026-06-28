@@ -1174,66 +1174,54 @@ class Component extends DCLogic {
         }
       }
       else if (style==='aurora'){
-        const AW = ab.width, AH = ab.height, s = ASCALE;
         const TAU = Math.PI*2;
-        // mouse influence: X shifts the rays' phase, Y raises/lowers the aurora
         const mxN = this._mx!=null ? (this._mx/W - 0.5) : 0;
         const myN = this._my!=null ? (this._my/H - 0.5) : 0;
-        abx.clearRect(0,0,AW,AH);
-        abx.globalCompositeOperation = cc.dark ? 'lighter' : 'source-over';
-        // soft sky wash, deeper toward the top
-        const sky = abx.createLinearGradient(0,0,0,AH);
-        sky.addColorStop(0,    rgba([120,90,210], cc.dark?0.15:0.12));
-        sky.addColorStop(0.55, rgba([60,200,170], cc.dark?0.09:0.08));
-        sky.addColorStop(1,    rgba([70,235,150], cc.dark?0.06:0.06));
-        abx.fillStyle = sky; abx.fillRect(0,0,AW,AH);
-        // luminous, diffuse aurora: soft glowing colour-clouds blended additively
-        // (green low -> teal/cyan -> blue/purple/magenta high), drifting & pulsing.
-        // Smooth radial falloff => very "sfumato", no waves, no seams on any screen.
-        const base = abx.createLinearGradient(0,0,0,AH);
-        base.addColorStop(0,    rgba([150,110,235], cc.dark?0.16:0.13));
-        base.addColorStop(0.55, rgba([60,200,200],  cc.dark?0.12:0.10));
-        base.addColorStop(1,    rgba([70,240,150],  cc.dark?0.16:0.13));
-        abx.fillStyle = base; abx.fillRect(0,0,AW,AH);
-        abx.globalCompositeOperation = 'lighter';   // additive light build-up = glow
-        const blobs = [
-          { x:0.18, y:0.80, r:0.60, col:[70,245,150],  ph:0.0 },
-          { x:0.44, y:0.66, r:0.55, col:[40,228,205],  ph:1.1 },
-          { x:0.72, y:0.78, r:0.56, col:[85,242,150],  ph:2.3 },
-          { x:0.32, y:0.44, r:0.60, col:[110,125,250], ph:3.0 },
-          { x:0.80, y:0.48, r:0.54, col:[185,105,245], ph:4.2 },
-          { x:0.56, y:0.30, r:0.50, col:[255,115,195], ph:5.0 },
-          { x:0.08, y:0.54, r:0.52, col:[95,205,255],  ph:1.8 }
+        // Rendered at FULL resolution directly on the canvas (no low-res buffer,
+        // no upscale) => crisp. Spiky top edges form sharp vertical rays.
+        const sky = ctx.createLinearGradient(0,0,0,H);
+        sky.addColorStop(0,    rgba([150,110,235], cc.dark?0.14:0.10));
+        sky.addColorStop(0.58, rgba([55,200,205],  cc.dark?0.10:0.07));
+        sky.addColorStop(1,    rgba([60,238,140],  cc.dark?0.14:0.10));
+        ctx.fillStyle = sky; ctx.fillRect(0,0,W,H);
+        ctx.globalCompositeOperation = cc.dark ? 'lighter' : 'source-over';
+        const curtains = [
+          { base:0.84, h:0.54, freq:11, s1:3.0, s2:4.0, lo:[40,235,125], hi:[150,70,235],  sp:0.26,  ph:0.0, k:cc.dark?0.90:0.80 },
+          { base:0.88, h:0.66, freq:16, s1:3.0, s2:5.0, lo:[30,210,200], hi:[120,110,250], sp:-0.20, ph:2.1, k:cc.dark?0.68:0.58 },
+          { base:0.79, h:0.46, freq:8,  s1:2.4, s2:3.4, lo:[120,250,165],hi:[255,90,180],  sp:0.33,  ph:4.0, k:cc.dark?0.55:0.48 }
         ];
-        for (const b of blobs){
-          const pulse = 0.55 + 0.45*Math.sin(time*0.5 + b.ph);
-          const cx = (b.x + Math.sin(time*0.20 + b.ph)*0.11 + mxN*0.12) * AW;
-          const cy = (b.y + Math.cos(time*0.16 + b.ph*1.3)*0.07 + myN*0.10) * AH;
-          const rad = b.r * AH * (0.85 + 0.25*Math.sin(time*0.4 + b.ph*1.3));
-          abx.save();
-          abx.translate(cx, cy);
-          abx.scale(1, 1.5);   // vertical stretch -> aurora-curtain feel
-          const a = (cc.dark?0.55:0.5) * pulse;
-          const g = abx.createRadialGradient(0,0,0, 0,0, rad);
-          g.addColorStop(0,    rgba(b.col, a));
-          g.addColorStop(0.45, rgba(b.col, a*0.45));
-          g.addColorStop(1,    rgba(b.col, 0));
-          abx.fillStyle = g;
-          abx.beginPath(); abx.arc(0,0,rad,0,TAU); abx.fill();
-          abx.restore();
+        const step = Math.max(1, Math.round(W/800));
+        for (const c of curtains){
+          const baseLine = H*c.base + myN*H*0.05;
+          const topMost = baseLine - H*c.h;
+          const g = ctx.createLinearGradient(0, baseLine, 0, topMost);
+          g.addColorStop(0,    rgba(c.lo, c.k));        // bright base of the rays (green)
+          g.addColorStop(0.42, rgba(c.hi, c.k*0.78));   // colour shift toward purple/magenta
+          g.addColorStop(1,    rgba(c.hi, 0));          // ray tips fade out
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.moveTo(-2, baseLine+2);
+          for (let x=-2; x<=W+2; x+=step){
+            const u = x/W;
+            // sharp, frequent ray spikes rising from the base line
+            const a1 = Math.abs(Math.sin(u*TAU*c.freq*0.5 + time*c.sp + c.ph + mxN*1.5));
+            const a2 = Math.abs(Math.sin(u*TAU*c.freq + time*c.sp*1.5 + c.ph*1.7));
+            const spike = Math.pow(a1, c.s1)*0.55 + Math.pow(a2, c.s2)*0.45;
+            ctx.lineTo(x, baseLine - spike*(H*c.h));
+          }
+          ctx.lineTo(W+2, baseLine+2);
+          ctx.closePath();
+          ctx.fill();
         }
-        abx.globalCompositeOperation = 'source-over';
-        // upscale the aurora buffer (smooth filled sheets -> no seams, no blur needed)
-        ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(ab, 0,0,AW,AH, 0,0,W,H);
-        // light that follows the cursor, melting into the aurora
+        ctx.globalCompositeOperation = 'source-over';
+        // light that follows the cursor
         if (this._mx!=null){
-          const mr = Math.max(W,H)*0.22;
+          const mr = Math.max(W,H)*0.20;
           ctx.globalCompositeOperation = cc.dark ? 'lighter' : 'source-over';
           const mc = [150,240,210];
           const mg = ctx.createRadialGradient(this._mx,this._my,0,this._mx,this._my,mr);
-          mg.addColorStop(0, rgba(mc, cc.dark?0.22:0.18));
-          mg.addColorStop(0.5, rgba(mc, cc.dark?0.08:0.07));
+          mg.addColorStop(0, rgba(mc, cc.dark?0.20:0.14));
+          mg.addColorStop(0.5, rgba(mc, cc.dark?0.07:0.05));
           mg.addColorStop(1, rgba(mc,0));
           ctx.fillStyle = mg; ctx.beginPath(); ctx.arc(this._mx,this._my,mr,0,Math.PI*2); ctx.fill();
           ctx.globalCompositeOperation = 'source-over';
