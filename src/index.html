@@ -99,6 +99,21 @@
   }
 }
 </style>
+<style>
+/* Box/card sempre bianchi con testo scuro (come il tema chiaro), in OGNI tema:
+   ridefinisco le variabili solo sugli elementi-card (quelli con var(--card));
+   l'accento del tema (--accent) resta intatto, e i testi della pagina fuori
+   dalle card continuano a usare i colori del tema. */
+[style*="var(--card)"] {
+  --card: #ffffff;
+  --surface: #faf9f6;
+  --cardBorder: rgba(22, 17, 12, 0.1);
+  --line: rgba(22, 17, 12, 0.08);
+  --shadow: 0 1px 2px rgba(22, 17, 12, 0.04), 0 28px 60px -32px rgba(22, 17, 12, 0.22);
+  --fg: #16110b;
+  --muted: #6c6557;
+}
+</style>
 <script src="./vendor/react.production.min.js"></script>
 <script src="./vendor/react-dom.production.min.js"></script>
 <script src="./dc-runtime.js"></script>
