@@ -1229,27 +1229,36 @@ class Component extends DCLogic {
     let startX = 0, startLeft = 0;
     el.addEventListener('pointerdown', (e) => {
       this.pauseCar();
-      if (e.pointerType === 'touch') return;
+      if (e.pointerType === 'touch' || (e.pointerType === 'mouse' && e.button !== 0)) return;
       this._dragging = true;
       startX = e.clientX; startLeft = el.scrollLeft;
       el.classList.add('is-dragging');
+      // Durante il drag: niente snap e niente scorrimento "smooth", altrimenti
+      // l'assegnazione di scrollLeft verrebbe animata e non seguirebbe il mouse.
       el.style.scrollSnapType = 'none';
-      el.setPointerCapture(e.pointerId);
+      el.style.scrollBehavior = 'auto';
+      el.style.userSelect = 'none';
+      try { el.setPointerCapture(e.pointerId); } catch (_) {}
+      e.preventDefault();
     });
     el.addEventListener('pointermove', (e) => {
       if (!this._dragging) return;
       el.scrollLeft = startLeft - (e.clientX - startX);
+      e.preventDefault();
     });
     const endDrag = () => {
       if (!this._dragging) return;
       this._dragging = false;
       el.classList.remove('is-dragging');
+      el.style.userSelect = '';
+      el.style.scrollBehavior = 'smooth';
       el.style.scrollSnapType = 'x mandatory';
       const step = this.carStep(el);
       el.scrollTo({ left: Math.round(el.scrollLeft / step) * step, behavior:'smooth' });
     };
     el.addEventListener('pointerup', endDrag);
     el.addEventListener('pointercancel', endDrag);
+    el.addEventListener('lostpointercapture', endDrag);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     this._carTimer = setInterval(() => {
