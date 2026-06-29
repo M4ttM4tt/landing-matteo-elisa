@@ -1420,33 +1420,55 @@ class Component extends DCLogic {
         ctx.fillStyle = sky; ctx.fillRect(0,0,W,H);
         ctx.globalCompositeOperation = cc.dark ? 'lighter' : 'source-over';
         const curtains = [
-          { base:0.92, h:0.44, freq:5, lo:[40,235,125], hi:[150,70,235],  sp:0.20,  ph:0.0, k:cc.dark?0.46:0.60 },
-          { base:0.95, h:0.52, freq:7, lo:[30,210,200], hi:[120,110,250], sp:-0.15, ph:2.1, k:cc.dark?0.38:0.48 },
-          { base:0.88, h:0.36, freq:4, lo:[120,250,165],hi:[255,90,180],  sp:0.26,  ph:4.0, k:cc.dark?0.32:0.42 }
+          { base:0.92, h:0.46, freq:3.4, lo:[40,235,125], hi:[150,70,235],  sp:0.20,  ph:0.0, k:cc.dark?0.46:0.60 },
+          { base:0.94, h:0.54, freq:4.3, lo:[30,210,200], hi:[120,110,250], sp:-0.15, ph:2.1, k:cc.dark?0.38:0.48 },
+          { base:0.89, h:0.40, freq:2.8, lo:[120,250,165],hi:[255,90,180],  sp:0.26,  ph:4.0, k:cc.dark?0.32:0.42 }
         ];
-        const step = Math.max(1, Math.round(W/600));
+        // Passo fine: la spezzata che disegna le onde resta nitida anche dove la
+        // curva è ripida (più punti = niente spigoli visibili).
+        const step = Math.max(1, Math.round(W/1000));
         for (const c of curtains){
           const baseLine = H*c.base;
           const topMost = baseLine - H*c.h;
           const g = ctx.createLinearGradient(0, baseLine, 0, topMost);
-          g.addColorStop(0,    rgba(c.lo, 0));          // base sfumata (fondo meno netto)
-          g.addColorStop(0.12, rgba(c.lo, c.k));
-          g.addColorStop(0.5,  rgba(c.hi, c.k*0.72));
+          // Transizione verticale graduale lo->hi: i tre veli si fondono fra loro
+          // senza bande nette, ma con un cuore di colore pieno che resta nitido.
+          // Banda di colore pieno ampia + code corte: bordi più definiti (nitidi),
+          // pur restando una transizione lo->hi morbida che fonde i veli.
+          g.addColorStop(0,    rgba(c.lo, 0));          // base sfumata
+          g.addColorStop(0.07, rgba(c.lo, c.k));
+          g.addColorStop(0.45, rgba(c.lo, c.k));        // cuore pieno e ampio
+          g.addColorStop(0.68, rgba(c.hi, c.k*0.82));
+          g.addColorStop(0.88, rgba(c.hi, c.k*0.40));
           g.addColorStop(1,    rgba(c.hi, 0));          // punte sfumate
+          // Punti della cresta, riusati per riempimento e bordo.
+          const tops = [];
+          for (let x=-2; x<=W+2; x+=step){
+            const u = x/W;
+            // Onde molto morbide: una grande oscillazione lenta (w3) domina la
+            // forma e fonde i veli, w1 la modula, w2 aggiunge un dettaglio lieve.
+            const w1 = 0.5 + 0.5*Math.sin(u*TAU*c.freq*0.5 + time*c.sp + c.ph);
+            const w2 = 0.5 + 0.5*Math.sin(u*TAU*c.freq + time*c.sp*1.4 + c.ph*1.7);
+            const w3 = 0.5 + 0.5*Math.sin(u*TAU*c.freq*0.22 - time*c.sp*0.6 + c.ph*0.5);
+            const wave = w3*0.46 + w1*0.40 + w2*0.14;
+            tops.push([x, baseLine - wave*(H*c.h)]);
+          }
+          // Riempimento del velo.
           ctx.fillStyle = g;
           ctx.beginPath();
           ctx.moveTo(-2, baseLine+2);
-          for (let x=-2; x<=W+2; x+=step){
-            const u = x/W;
-            // onde morbide e arrotondate (niente picchi affilati)
-            const w1 = 0.5 + 0.5*Math.sin(u*TAU*c.freq*0.5 + time*c.sp + c.ph);
-            const w2 = 0.5 + 0.5*Math.sin(u*TAU*c.freq + time*c.sp*1.4 + c.ph*1.7);
-            const wave = w1*0.6 + w2*0.4;
-            ctx.lineTo(x, baseLine - wave*(H*c.h));
-          }
+          for (let i=0;i<tops.length;i++) ctx.lineTo(tops[i][0], tops[i][1]);
           ctx.lineTo(W+2, baseLine+2);
           ctx.closePath();
           ctx.fill();
+          // Cresta nitida: una linea sottile e brillante lungo il bordo superiore
+          // definisce la forma dell'onda — è ciò che dà nitidezza all'aurora.
+          ctx.beginPath();
+          ctx.moveTo(tops[0][0], tops[0][1]);
+          for (let i=1;i<tops.length;i++) ctx.lineTo(tops[i][0], tops[i][1]);
+          ctx.lineWidth = 1.4;
+          ctx.strokeStyle = rgba(c.hi, (cc.dark?0.55:0.40).toFixed(3));
+          ctx.stroke();
         }
         ctx.globalCompositeOperation = 'source-over';
       }
