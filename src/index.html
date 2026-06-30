@@ -198,6 +198,9 @@
 [data-hover-glow]:hover .mep-spotlight {
   opacity: 1;
 }
+html[data-theme-mode='light'] .mep-spotlight {
+  display: none !important;
+}
 /* Nav link attivo */
 nav a[href^="#"] {
   position: relative;
@@ -1849,6 +1852,7 @@ class Component extends DCLogic {
     };
     if (!this._currentCC) this._currentCC = JSON.parse(JSON.stringify(target));
     this._targetCC = target;
+    document.documentElement.setAttribute('data-theme-mode', t.dark ? 'dark' : 'light');
     const glow = document.getElementById('mep-glow');
     if (glow) glow.style.display = t.dark ? 'block' : 'none';
     // Tema dot: respiro sul dot attivo
