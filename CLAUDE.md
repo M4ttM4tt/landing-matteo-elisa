@@ -1,4 +1,4 @@
-# CLAUDE.md — Guida per lo sviluppo assistito da AI
+# CLAUDE.md - Guida per lo sviluppo assistito da AI
 
 Contesto per Claude Code (e agenti simili) che lavorano su questo repository.
 Leggi questo file prima di modificare il codice.
@@ -34,6 +34,9 @@ sconosciuto); è il runtime a eseguirlo. Questo è voluto.
 
 - ✅ **Testi e contenuti**: modificali in `renderVals()` dentro lo script
   `text/x-dc` (array `services`, `steps`, `projects`, ecc.).
+- **Responsive sempre**: quando aggiungi o modifichi codice, verifica sempre
+  sia il layout desktop sia quello mobile. Ogni sezione, card e navbar deve
+  restare leggibile e non tagliarsi su schermi piccoli.
 - ✅ **Markup visibile**: è il prerender in `src/index.html`. Se cambi i dati,
   aggiorna in modo coerente il markup corrispondente (il prerender è statico:
   non si rigenera da solo).

@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0710'/%3E%3Crect x='30' y='34' width='40' height='32' rx='9' fill='%23b14cff'/%3E%3C/svg%3E">
 
 <style>
-/* === Adattamento responsive — agisce SOLO su schermi piccoli (il desktop resta invariato) === */
+/* === Adattamento responsive ? agisce SOLO su schermi piccoli (il desktop resta invariato) === */
 @media (max-width: 900px) {
   /* Hero: da due colonne a una */
   [style*="grid-template-columns: 1.05fr"] {
@@ -22,6 +22,13 @@
   /* Griglie sezioni: livello tablet */
   #processo [style*="grid-template-columns"],
   #lavori [style*="grid-template-columns"],
+  #numeri [style*="grid-template-columns"],
+  #perche [style*="grid-template-columns"],
+  #fit [style*="grid-template-columns"],
+  #esistente [style*="grid-template-columns"],
+  #collaborazione [style*="grid-template-columns"],
+  #integrazioni [style*="grid-template-columns"],
+  #cfg-grid,
   #metodo-grid,
   #stack-grid,
   #engagement-grid {
@@ -32,7 +39,7 @@
   }
 }
 @media (max-width: 640px) {
-  /* Margini laterali più stretti su tutte le sezioni */
+  /* Margini laterali pi? stretti su tutte le sezioni */
   section {
     padding-left: 20px !important;
     padding-right: 20px !important;
@@ -43,14 +50,31 @@
   }
   /* Nav compatta: nasconde i link secondari, restano logo + temi + CTA */
   nav {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-    gap: 10px !important;
+    top: 10px !important;
+    width: calc(100% - 20px) !important;
+    padding: 10px 12px !important;
+    gap: 8px !important;
+    border-radius: 20px !important;
   }
   nav > div:nth-of-type(1) {
     display: none !important;
   }
-  /* Su mobile: nasconde DEV STUDIO per dare spazio al CTA */
+  nav > div:nth-of-type(2) {
+    gap: 8px !important;
+  }
+  #mep-theme-dots {
+    padding: 7px 8px !important;
+    gap: 7px !important;
+  }
+  #mep-theme-dots button {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  nav a[href="#contatti"] {
+    padding: 11px 14px !important;
+    font-size: 12px !important;
+  }
+  /* Su mobile: nasconde il payoff sotto il brand per dare spazio */
   nav a[href="#top"] span > span:last-child {
     display: none !important;
   }
@@ -59,6 +83,13 @@
   #servizi [style*="grid-template-columns"],
   #processo [style*="grid-template-columns"],
   #lavori [style*="grid-template-columns"],
+  #numeri [style*="grid-template-columns"],
+  #perche [style*="grid-template-columns"],
+  #fit [style*="grid-template-columns"],
+  #esistente [style*="grid-template-columns"],
+  #collaborazione [style*="grid-template-columns"],
+  #integrazioni [style*="grid-template-columns"],
+  #cfg-grid,
   #metodo-grid,
   #stack-grid,
   #engagement-grid,
@@ -69,6 +100,14 @@
   #stack-panel {
     position: static !important;
     top: auto !important;
+  }
+  #mep-back-top {
+    right: 16px !important;
+    bottom: 16px !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 14px !important;
+    font-size: 20px !important;
   }
 }
 </style>
@@ -1173,6 +1212,89 @@ details[open] summary span { transform: rotate(45deg); }
     <hr class="mep-divider">
 
     <!-- ===================== PERCHÉ SCEGLIERCI ===================== -->
+    <hr class="mep-divider">
+
+    <!-- ===================== FIT ===================== -->
+    <section id="fit" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap">
+          <div style="max-width:680px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--accent)">// QUANDO HA SENSO LAVORARE INSIEME</span>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-0.025em;margin:18px 0 0;color:var(--fg)">Se devi sistemare, lanciare o far crescere qualcosa di concreto.</h2>
+          </div>
+          <p style="max-width:420px;font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.7;margin:0">Non serve avere un progetto enorme: spesso il valore sta nel prendere la direzione giusta sul pezzo che conta davvero.</p>
+        </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px">
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">01</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Da dove partiamo</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Capire se il progetto va lanciato, ripulito o rifatto solo in alcune parti.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">02</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Cosa evitiamo</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Lavori sovradimensionati, passaggi inutili e scelte tecniche che complicano tutto.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">03</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Cosa consegniamo</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Una base chiara, utilizzabile e pronta per crescere senza rifare tutto dopo.</p>
+          </div>
+        </div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:42px">
+          <sc-for list="{{ fitCases }}" as="item" hint-placeholder-count="4">
+            <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:22px;padding:24px;box-shadow:var(--shadow)" data-hover-glow="true">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">{{ item.kicker }}</div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:22px;letter-spacing:-0.02em;line-height:1.08;margin:14px 0 0;color:var(--fg)">{{ item.title }}</h3>
+              <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.7;margin:12px 0 0">{{ item.desc }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mep-divider">
+
+    <!-- ===================== ESISTENTE ===================== -->
+    <section id="esistente" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);max-width:760px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--accent)">// SE HAI GIA' QUALCOSA ONLINE</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-0.025em;margin:18px 0 0;color:var(--fg)">Non partiamo sempre da zero.</h2>
+          <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.7;margin:18px 0 0;max-width:58ch">Possiamo entrare su siti, e-commerce o prodotti esistenti per ripulire, migrare, velocizzare o estendere quello che c'è già.</p>
+        </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px">
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">01</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Audit rapido</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Identifichiamo cosa tenere, cosa correggere e cosa conviene sostituire.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">02</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Intervento mirato</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Ci muoviamo sui punti che bloccano risultati, senza toccare il resto inutilmente.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">03</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Evoluzione pulita</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">La base resta ordinata, cosi puoi aggiungere nuove parti senza creare altro debito tecnico.</p>
+          </div>
+        </div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:42px">
+          <sc-for list="{{ existingProjectCases }}" as="item" hint-placeholder-count="4">
+            <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:22px;padding:24px;box-shadow:var(--shadow)" data-hover-glow="true">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:18px">
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">{{ item.kicker }}</div>
+                  <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:22px;letter-spacing:-0.02em;line-height:1.08;margin:12px 0 0;color:var(--fg)">{{ item.title }}</h3>
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);padding:6px 10px;border:1px solid var(--cardBorder);border-radius:999px;background:var(--surface)">{{ item.tag }}</span>
+              </div>
+              <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.7;margin:12px 0 0">{{ item.desc }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
     <section id="perche" style="padding:110px 32px;scroll-margin-top:70px">
       <div style="max-width:1180px;margin:0 auto">
         <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);max-width:680px">
@@ -1343,6 +1465,85 @@ details[open] summary span { transform: rotate(45deg); }
                   <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)">Output: <span style="color:var(--muted)">{{ item.out }}</span></div>
                 </div>
               </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mep-divider">
+
+    <!-- ===================== COLLABORAZIONE ===================== -->
+    <section id="collaborazione" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap">
+          <div style="max-width:680px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--accent)">// COME POSSIAMO LAVORARE INSIEME</span>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-0.025em;margin:18px 0 0;color:var(--fg)">Non solo progetto una tantum.</h2>
+          </div>
+          <p style="max-width:420px;font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.7;margin:0">Ci attiviamo in modo diverso a seconda di obiettivo, tempi e continuit? richiesta.</p>
+        </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px">
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">01</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Sprint singolo</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Perfetto per una landing, un restyling o un set di aggiornamenti limitati nel tempo.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">02</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Build completa</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Quando bisogna costruire strategia, design e sviluppo in un unico flusso.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">03</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Supporto continuo</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Per mantenere il progetto attivo, aggiornato e pronto a nuove evoluzioni.</p>
+          </div>
+        </div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px">
+          <sc-for list="{{ collaborationModes }}" as="mode" hint-placeholder-count="3">
+            <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:24px;padding:26px;box-shadow:var(--shadow)" data-hover-glow="true">
+              <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">{{ mode.kicker }}</span>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:24px;letter-spacing:-0.02em;line-height:1.08;margin:16px 0 0;color:var(--fg)">{{ mode.title }}</h3>
+              <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.7;margin:12px 0 0">{{ mode.desc }}</p>
+              <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">{{ mode.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mep-divider">
+
+    <!-- ===================== INTEGRAZIONI ===================== -->
+    <section id="integrazioni" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);max-width:760px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--accent)">// INTEGRAZIONI CHE GESTIAMO</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-0.025em;margin:18px 0 0;color:var(--fg)">Pagamenti, CRM, analytics, automazioni.</h2>
+          <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.7;margin:18px 0 0;max-width:58ch">Quando il progetto deve dialogare con strumenti esterni, impostiamo integrazioni e flussi senza costringerti a cucire pezzi diversi da solo.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px">
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">01</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Mappiamo i flussi</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Definiamo quali dati entrano, dove passano e cosa deve succedere in ogni punto.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">02</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Connettiamo gli strumenti</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Pagamenti, CRM, form, notifiche e servizi esterni parlano tra loro in modo ordinato.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">03</div>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:20px;line-height:1.1;letter-spacing:-0.02em;margin:12px 0 0;color:var(--fg)">Misuriamo gli effetti</h3>
+            <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.7;margin:10px 0 0">Tracciamo eventi e conversioni per capire cosa funziona davvero dopo il lancio.</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:42px">
+          <sc-for list="{{ integrationGroups }}" as="group" hint-placeholder-count="4">
+            <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:22px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent)">{{ group.label }}</div>
+              <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.7;margin:14px 0 0">{{ group.items }}</p>
             </div>
           </sc-for>
         </div>
@@ -1733,6 +1934,19 @@ class Component extends DCLogic {
       + '?subject=' + encodeURIComponent('Richiesta preventivo - ' + baseDef.label)
       + '&body=' + encodeURIComponent(mailBody);
 
+    const fitCases = [
+      { kicker:'Nuovo progetto', title:'Devi partire bene', desc:'Hai un idea chiara ma ti serve trasformarla in un sito, e-commerce o prodotto digitale concreto.' },
+      { kicker:'Rework', title:'Hai qualcosa che non rende', desc:'Il sito c’e, ma non converte, non comunica bene o non regge piu il livello che ti serve.' },
+      { kicker:'Operativita', title:'Hai processi da snellire', desc:'Vuoi ridurre lavoro manuale con area riservata, dashboard, integrazioni o automazioni.' },
+      { kicker:'Crescita', title:'Stai scalando', desc:'Ti serve una base piu solida per campagne, contenuti, nuovi servizi o piu utenti.' }
+    ];
+    const existingProjectCases = [
+      { kicker:'Redesign', title:'Rifacimento senza buttare tutto', tag:'UX/UI', desc:'Riorganizziamo contenuti, struttura e interfaccia mantenendo cio che ha ancora senso tenere.' },
+      { kicker:'Migrazione', title:'Passaggio a stack piu solido', tag:'Tech', desc:'Portiamo il progetto su una base piu semplice da gestire, aggiornare e far crescere.' },
+      { kicker:'Ottimizzazione', title:'Performance e pulizia tecnica', tag:'Speed', desc:'Interveniamo su lentezza, problemi SEO, codice disordinato o punti fragili in produzione.' },
+      { kicker:'Estensione', title:'Nuove feature su base esistente', tag:'Build', desc:'Aggiungiamo aree riservate, flussi, pagamenti o componenti nuovi senza ricominciare da capo.' }
+    ];
+
     const serviceDefs = [
       { n:'01', title:'Siti Vetrina & Landing', desc:'La presenza online di attività e professionisti: siti veloci, curati e ottimizzati per farti trovare.', tech:'Design · SEO · Performance · CMS' },
       { n:'02', title:'E-commerce', desc:'Negozi online completi di catalogo, pagamenti e gestione ordini, pronti a vendere.', tech:'Shopify · WooCommerce · Stripe' },
@@ -1759,6 +1973,17 @@ class Component extends DCLogic {
       { n:'02', eyebrow:'Interfaccia', title:'Design e prototipo', desc:'Costruiamo interfaccia e prototipo condivisibile per raccogliere feedback presto.', out:'UI approvata e contenuti ordinati' },
       { n:'03', eyebrow:'Implementazione', title:'Sviluppo e iterazione', desc:'Implementiamo il progetto con anteprima live e correzioni rapide.', out:'Build testata e staging online' },
       { n:'04', eyebrow:'Rilascio', title:'Deploy e supporto', desc:'Mettiamo online, attiviamo tracking e definiamo la manutenzione.', out:'Rilascio, monitoraggio e handoff' }
+    ];
+    const collaborationModes = [
+      { kicker:'Sprint', title:'Intervento mirato', desc:'Per landing, restyling, nuove pagine o funzionalita specifiche con obiettivo e scadenza chiari.', meta:'Ideale per: lanci, update, MVP, ottimizzazioni' },
+      { kicker:'Progetto', title:'Build end-to-end', desc:'Dalla strategia iniziale fino a design, sviluppo e rilascio quando c e da costruire qualcosa di completo.', meta:'Ideale per: siti, e-commerce, web app, piattaforme' },
+      { kicker:'Continuativo', title:'Supporto evolutivo', desc:'Dopo il lancio possiamo seguire evoluzioni, manutenzione, nuove feature e ottimizzazioni nel tempo.', meta:'Ideale per: prodotti che crescono mese dopo mese' }
+    ];
+    const integrationGroups = [
+      { label:'Pagamenti', items:'Stripe, checkout, abbonamenti, pagamenti una tantum e flussi ordine.' },
+      { label:'CRM & lead', items:'HubSpot, form avanzati, sincronizzazione contatti e pipeline commerciali.' },
+      { label:'Analytics', items:'GA4, Pixel, eventi custom, conversioni e tracciamenti lato marketing.' },
+      { label:'Automazioni', items:'Email, notifiche, webhook, flussi operativi e connessioni con servizi esterni.' }
     ];
     const carDots = serviceDefs.map((s, i) => ({ i, label: 'Vai a ' + s.title, onClick: () => this.scrollToCard(i) }));
     const cfgMaxTotal = 8000 + cfgAddonDefs.reduce((s, d) => s + d.price, 0);
