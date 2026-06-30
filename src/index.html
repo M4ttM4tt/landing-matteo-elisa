@@ -21,8 +21,14 @@
   }
   /* Griglie sezioni: livello tablet */
   #processo [style*="grid-template-columns"],
-  #lavori [style*="grid-template-columns"] {
+  #lavori [style*="grid-template-columns"],
+  #metodo-grid,
+  #stack-grid,
+  #engagement-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #stack-split {
+    grid-template-columns: 1fr !important;
   }
 }
 @media (max-width: 640px) {
@@ -52,9 +58,17 @@
   [style*="grid-template-columns: 1.05fr"],
   #servizi [style*="grid-template-columns"],
   #processo [style*="grid-template-columns"],
-  #lavori [style*="grid-template-columns"] {
+  #lavori [style*="grid-template-columns"],
+  #metodo-grid,
+  #stack-grid,
+  #engagement-grid,
+  #stack-split {
     grid-template-columns: 1fr !important;
     gap: 28px !important;
+  }
+  #stack-panel {
+    position: static !important;
+    top: auto !important;
   }
 }
 </style>
@@ -1108,7 +1122,7 @@ details[open] summary span { transform: rotate(45deg); }
                   <div class="mep-svc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><polyline points="7 8 10 11 7 14"/><polyline points="17 8 14 11 17 14"/></svg></div>
                   <div>
                     <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:24px;letter-spacing:-0.01em;margin:0;color:var(--fg)">Web App</h3>
-                    <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.6;margin:10px 0 0">Piattaforme, SaaS e dashboard performanti, costruite per scalare con il tuo business.</p>
+                    <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.6;margin:10px 0 0">Piattaforme, SaaS e dashboard performanti, costruite per scalare con il business.</p>
                   </div>
                 </div>
                 <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:22px;padding-top:18px;border-top:1px solid var(--line)">React · Next.js · Node · PostgreSQL</div>
@@ -1227,6 +1241,32 @@ details[open] summary span { transform: rotate(45deg); }
 
     <hr class="mep-divider">
 
+    <!-- ===================== METODO ===================== -->
+    <section id="metodo" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+          <div style="max-width:680px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--accent)">// APPROCCIO</span>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-0.025em;margin:18px 0 0;color:var(--fg)">Una grafica forte funziona solo se dietro c'e un metodo solido.</h2>
+          </div>
+          <p style="max-width:360px;font-family:'Manrope',sans-serif;color:var(--muted);font-size:16px;line-height:1.65;margin:0">Disegniamo pagine che si fanno ricordare, ma con una struttura pensata per conversione, chiarezza e manutenzione reale.</p>
+        </div>
+        <div id="metodo-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:54px">
+          <sc-for list="{{ pillars }}" as="pillar" hint-placeholder-count="3">
+            <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:linear-gradient(180deg,var(--card),color-mix(in srgb, var(--card) 75%, transparent));border:1px solid var(--cardBorder);border-radius:22px;padding:30px;box-shadow:var(--shadow);position:relative;overflow:hidden" data-hover-glow="true">
+              <div style="position:absolute;inset:auto -60px -60px auto;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);opacity:.32;filter:blur(18px)"></div>
+              <span style="position:relative;z-index:1;display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;color:var(--accent)">{{ pillar.kicker }}</span>
+              <h3 style="position:relative;z-index:1;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:26px;line-height:1.08;letter-spacing:-0.02em;margin:18px 0 0;color:var(--fg)">{{ pillar.title }}</h3>
+              <p style="position:relative;z-index:1;font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.7;margin:14px 0 0">{{ pillar.desc }}</p>
+              <div style="position:relative;z-index:1;margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)">{{ pillar.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mep-divider">
+
     <!-- ===================== NUMERI ===================== -->
     <section id="numeri" style="padding:110px 32px;scroll-margin-top:70px">
       <div style="max-width:1180px;margin:0 auto">
@@ -1250,6 +1290,77 @@ details[open] summary span { transform: rotate(45deg); }
           <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);text-align:center;background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:36px 20px;box-shadow:var(--shadow);backdrop-filter:blur(8px)" data-hover-glow="true">
             <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(36px,4vw,52px);background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1">&lt;24h</div>
             <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:10px">TEMPO MEDIO DI RISPOSTA</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mep-divider">
+    <!-- ===================== STACK ===================== -->
+    <section id="stack" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);display:grid;grid-template-columns:0.9fr 1.1fr;gap:28px;align-items:end">
+          <div>
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.16em;color:var(--accent)">// STACK & GARANZIE</span>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(34px,4.8vw,58px);line-height:0.98;letter-spacing:-0.04em;margin:20px 0 0;color:var(--fg)">Tecnologia scelta per far funzionare il progetto, non per fare scena.</h2>
+          </div>
+          <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:17px;line-height:1.8;max-width:560px;margin:0 0 4px auto">Partiamo dagli obiettivi, poi scegliamo stack, CMS e architettura. Cosi il risultato e piu pulito, piu veloce e piu facile da far crescere nel tempo.</p>
+        </div>
+
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .85s cubic-bezier(.16,.8,.3,1),transform .85s cubic-bezier(.16,.8,.3,1);margin-top:34px;background:linear-gradient(135deg,color-mix(in srgb, var(--accent) 10%, var(--card)),var(--card));border:1px solid var(--cardBorder);border-radius:30px;padding:32px;box-shadow:var(--shadow);position:relative;overflow:hidden">
+          <div style="position:absolute;top:-40px;right:-20px;width:180px;height:180px;border-radius:40px;background:linear-gradient(135deg,var(--accent),transparent);opacity:.12;transform:rotate(16deg)"></div>
+          <div style="position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+            <div style="padding:18px 18px 20px;border-radius:22px;background:rgba(255,255,255,0.04);border:1px solid var(--cardBorder)">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:'JetBrains Mono',monospace;font-size:12px">01</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Qualita base</span>
+              </div>
+              <p style="font-family:'Manrope',sans-serif;color:var(--fg);font-size:14px;line-height:1.7;margin:14px 0 0">Performance, accessibilita e SEO considerate da subito.</p>
+            </div>
+            <div style="padding:18px 18px 20px;border-radius:22px;background:rgba(255,255,255,0.04);border:1px solid var(--cardBorder)">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:'JetBrains Mono',monospace;font-size:12px">02</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Processo pulito</span>
+              </div>
+              <p style="font-family:'Manrope',sans-serif;color:var(--fg);font-size:14px;line-height:1.7;margin:14px 0 0">Repository ordinato, anteprima live e rilascio sotto controllo.</p>
+            </div>
+            <div style="padding:18px 18px 20px;border-radius:22px;background:rgba(255,255,255,0.04);border:1px solid var(--cardBorder)">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:var(--onAccent);font-family:'JetBrains Mono',monospace;font-size:12px">03</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Dopo il lancio</span>
+              </div>
+              <p style="font-family:'Manrope',sans-serif;color:var(--fg);font-size:14px;line-height:1.7;margin:14px 0 0">Supporto reale, non consegna e sparizione.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="stack-grid" style="display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:22px;align-items:stretch">
+          <div data-reveal="true" data-stagger="true" style="grid-column:span 5;min-height:260px;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:28px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden" data-hover-glow="true">
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Frontend</span>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:32px;line-height:1;letter-spacing:-0.03em;color:var(--fg);margin:18px 0 0">React, Next.js, dashboard e landing veloci.</h3>
+            <p style="font-family:'Manrope',sans-serif;font-size:15px;line-height:1.75;color:var(--muted);margin:16px 0 0;max-width:32ch">Interfacce editoriali, aree riservate e componenti costruiti per restare fluidi anche quando il progetto cresce.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="grid-column:span 3;min-height:260px;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:linear-gradient(180deg,color-mix(in srgb, var(--accent2) 8%, var(--card)),var(--card));border:1px solid var(--cardBorder);border-radius:28px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden" data-hover-glow="true">
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Commerce</span>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;line-height:1.04;letter-spacing:-0.03em;color:var(--fg);margin:18px 0 0">Shopify, WooCommerce, Stripe.</p>
+            <p style="font-family:'Manrope',sans-serif;font-size:14px;line-height:1.72;color:var(--muted);margin:14px 0 0">Cataloghi, checkout e automazioni pensate per vendere davvero.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="grid-column:span 4;min-height:260px;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:28px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden" data-hover-glow="true">
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Cloud</span>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:28px;line-height:1.04;letter-spacing:-0.03em;color:var(--fg);margin:18px 0 0">AWS, Docker, CI/CD e monitoraggio.</p>
+            <p style="font-family:'Manrope',sans-serif;font-size:14px;line-height:1.72;color:var(--muted);margin:14px 0 0">Hosting, deploy continui, logging e backup con una base tecnica solida.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="grid-column:span 4;min-height:210px;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:24px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Backend</span>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:25px;line-height:1.08;letter-spacing:-0.02em;color:var(--fg);margin:16px 0 0">Node.js, API REST/GraphQL e database relazionali.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="grid-column:span 4;min-height:210px;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:24px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Mobile</span>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:25px;line-height:1.08;letter-spacing:-0.02em;color:var(--fg);margin:16px 0 0">Swift, Kotlin e React Native per flussi business e UX pulita.</p>
+          </div>
+          <div data-reveal="true" data-stagger="true" style="grid-column:span 4;min-height:210px;opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:linear-gradient(135deg,color-mix(in srgb, var(--accent) 8%, var(--card)),var(--card));border:1px solid var(--cardBorder);border-radius:24px;padding:22px;box-shadow:var(--shadow)" data-hover-glow="true">
+            <span style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid var(--cardBorder);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent)">Growth</span>
+            <p style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:25px;line-height:1.08;letter-spacing:-0.02em;color:var(--fg);margin:16px 0 0">SEO tecnico, tracciamenti, Core Web Vitals e CRO di base.</p>
           </div>
         </div>
       </div>
@@ -1330,14 +1441,70 @@ details[open] summary span { transform: rotate(45deg); }
           </div>
           <div id="cfg-panel" style="position:sticky;top:96px;background:var(--card);border:1px solid var(--cardBorder);border-radius:18px;padding:30px;box-shadow:var(--shadow);backdrop-filter:blur(8px)">
             <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;color:var(--accent)">// STIMA INDICATIVA</span>
-            <div id="mep-estimate-display" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);letter-spacing:-0.02em;line-height:1.05;margin:14px 0 0;color:var(--fg)">{{ estimateLow }} – {{ estimateHigh }}</div>
+            <div id="mep-estimate-display" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);letter-spacing:-0.02em;line-height:1.05;margin:14px 0 0;color:var(--fg)">{{ estimateLow }} - {{ estimateHigh }}</div>
             <div class="mep-estimate-bar">
               <div class="mep-estimate-bar-fill" style="width:{{ estBarPct }}%"></div>
             </div>
             <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:14px;line-height:1.55;margin:14px 0 0">{{ cfgSummary }}</p>
-            <a href="{{ mailtoHref }}" class="mep-cta-pulse" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;padding:15px 24px;border-radius:999px;background:var(--accent);color:var(--onAccent);font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 14px 44px -14px var(--glow);transition:transform .25s ease" style-hover="transform:translateY(-2px)">Richiedi preventivo →</a>
-            <p style="font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.5;color:var(--muted);margin:16px 0 0">Stima non vincolante. Ti rispondiamo entro 24 ore con un preventivo dettagliato.</p>
+            <div style="margin-top:20px;padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--cardBorder)">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--muted)">DETTAGLIO PREVENTIVO</div>
+              <div style="display:grid;gap:10px;margin-top:14px">
+                <sc-for list="{{ quoteLines }}" as="line" hint-placeholder-count="4">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+                    <div>
+                      <div style="font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;color:var(--fg)">{{ line.label }}</div>
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px">{{ line.meta }}</div>
+                    </div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg);white-space:nowrap">{{ line.amount }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="height:1px;background:var(--line);margin:16px 0"></div>
+              <div style="display:grid;gap:10px">
+                <sc-for list="{{ quoteFoot }}" as="line" hint-placeholder-count="2">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+                    <div>
+                      <div style="font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;color:var(--fg)">{{ line.label }}</div>
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px">{{ line.meta }}</div>
+                    </div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap">{{ line.amount }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <a href="{{ mailtoHref }}" class="mep-cta-pulse" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;padding:15px 24px;border-radius:999px;background:var(--accent);color:var(--onAccent);font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 14px 44px -14px var(--glow);transition:transform .25s ease" style-hover="transform:translateY(-2px)">Invia il preventivo via email -></a>
+            <p style="font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.5;color:var(--muted);margin:16px 0 0">Email precompilata con dettaglio completo. Per invio automatico dal sito serve un backend o un servizio email dedicato.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mep-divider">
+
+    <!-- ===================== ENGAGEMENT ===================== -->
+    <section id="engagement" style="padding:110px 32px;scroll-margin-top:70px">
+      <div style="max-width:1180px;margin:0 auto">
+        <div data-reveal="true" style="opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,.8,.3,1),transform .8s cubic-bezier(.16,.8,.3,1);max-width:720px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--accent)">// PERCORSO PROGETTO</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(32px,4.6vw,54px);line-height:1.04;letter-spacing:-0.025em;margin:18px 0 0;color:var(--fg)">Un progetto chiaro, con step visibili e consegne concrete.</h2>
+        </div>
+        <div id="engagement-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:54px">
+          <sc-for list="{{ engagementSteps }}" as="item" hint-placeholder-count="4">
+            <div data-reveal="true" data-stagger="true" style="opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,.8,.3,1),transform .7s cubic-bezier(.16,.8,.3,1);background:var(--card);border:1px solid var(--cardBorder);border-radius:24px;padding:30px;box-shadow:var(--shadow);position:relative;overflow:hidden" data-hover-glow="true">
+              <div style="display:grid;grid-template-columns:72px 1fr;gap:18px;align-items:start">
+                <div style="position:relative;padding-top:2px">
+                  <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;line-height:1;color:var(--accent)">{{ item.n }}</div>
+                  <div style="width:1px;height:72px;margin:14px 0 0 15px;background:linear-gradient(180deg,var(--accent),transparent)"></div>
+                </div>
+                <div>
+                  <span style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--muted);text-transform:uppercase">{{ item.eyebrow }}</span>
+                  <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:26px;letter-spacing:-0.02em;line-height:1.08;margin:10px 0 0;color:var(--fg)">{{ item.title }}</h3>
+                  <p style="font-family:'Manrope',sans-serif;color:var(--muted);font-size:15px;line-height:1.7;margin:14px 0 0">{{ item.desc }}</p>
+                  <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)">Output: <span style="color:var(--muted)">{{ item.out }}</span></div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
         </div>
       </div>
     </section>
@@ -1549,10 +1716,13 @@ class Component extends DCLogic {
     const addonsState = this.state.cfgAddons || {};
     const baseDef = cfgTypeDefs.find(d => d.key === cfgTypeKey) || cfgTypeDefs[0];
     let total = baseDef.price;
-    const chosenLabels = [];
-    cfgAddonDefs.forEach(d => { if (addonsState[d.key]) { total += d.price; chosenLabels.push(d.label); } });
+    const chosenDefs = [];
+    cfgAddonDefs.forEach(d => { if (addonsState[d.key]) { total += d.price; chosenDefs.push(d); } });
+    const chosenLabels = chosenDefs.map(d => d.label);
     const low = total;
     const high = Math.round((total * 1.3) / 100) * 100;
+    const deposit = Math.round((total * 0.3) / 50) * 50;
+    const balance = total - deposit;
     this._cfgLow = low; this._cfgHigh = high;
     const cfgTypes = cfgTypeDefs.map(d => {
       const on = d.key === cfgTypeKey;
@@ -1577,25 +1747,62 @@ class Component extends DCLogic {
       };
     });
     const cfgSummary = baseDef.label
-      + (chosenLabels.length ? ' · ' + chosenLabels.length + (chosenLabels.length === 1 ? ' opzione' : ' opzioni') : ' · nessuna opzione');
+      + (chosenLabels.length ? ' - ' + chosenLabels.length + (chosenLabels.length === 1 ? ' opzione' : ' opzioni') : ' - nessuna opzione');
+    const quoteLines = [
+      { key:'base', label:baseDef.label, meta:'Voce principale', amount:fmt(baseDef.price) }
+    ].concat(chosenDefs.map(d => ({
+      key:d.key, label:d.label, meta:'Opzione aggiuntiva', amount:'+' + fmt(d.price)
+    })));
+    const quoteFoot = [
+      { key:'deposit', label:'Acconto avvio', meta:'30% per partire', amount:fmt(deposit) },
+      { key:'balance', label:'Saldo finale', meta:'Alla consegna', amount:fmt(balance) }
+    ];
     const mailBody = [
-      'Tipo di progetto: ' + baseDef.label,
-      'Opzioni: ' + (chosenLabels.length ? chosenLabels.join(', ') : 'nessuna'),
-      'Stima indicativa: ' + fmt(low) + ' – ' + fmt(high),
+      'Preventivo richiesto da configuratore',
+      '',
+      'Progetto base:',
+      '- ' + baseDef.label + ' -> ' + fmt(baseDef.price),
+      '',
+      'Opzioni selezionate:',
+      ...(chosenDefs.length ? chosenDefs.map(d => '- ' + d.label + ' -> ' + fmt(d.price)) : ['- nessuna']),
+      '',
+      'Totale stimato: ' + fmt(low),
+      'Forbice prudenziale: ' + fmt(low) + ' - ' + fmt(high),
+      'Acconto avvio (30%): ' + fmt(deposit),
+      'Saldo finale: ' + fmt(balance),
       '',
       'Descrivi qui la tua idea:'
     ].join('\n');
     const mailtoHref = 'mailto:ciao@matteoelisa.dev'
-      + '?subject=' + encodeURIComponent('Richiesta preventivo — ' + baseDef.label)
+      + '?subject=' + encodeURIComponent('Richiesta preventivo - ' + baseDef.label)
       + '&body=' + encodeURIComponent(mailBody);
 
     const serviceDefs = [
       { n:'01', title:'Siti Vetrina & Landing', desc:'La presenza online di attività e professionisti: siti veloci, curati e ottimizzati per farti trovare.', tech:'Design · SEO · Performance · CMS' },
       { n:'02', title:'E-commerce', desc:'Negozi online completi di catalogo, pagamenti e gestione ordini, pronti a vendere.', tech:'Shopify · WooCommerce · Stripe' },
-      { n:'03', title:'Web App', desc:'Piattaforme, SaaS e dashboard performanti, costruite per scalare con il tuo business.', tech:'React · Next.js · Node · PostgreSQL' },
+      { n:'03', title:'Web App', desc:'Piattaforme, SaaS e dashboard performanti, costruite per scalare con il business.', tech:'React · Next.js · Node · PostgreSQL' },
       { n:'04', title:'App Mobile', desc:'App native e cross-platform per iOS e Android, con UX curata in ogni dettaglio.', tech:'Swift · Kotlin · React Native · Flutter' },
       { n:'05', title:'Backend & API', desc:'Architetture solide, API documentate e integrazioni con servizi di terze parti.', tech:'Node · Go · GraphQL · REST' },
       { n:'06', title:'Cloud & DevOps', desc:'Deploy continuo, monitoraggio e infrastruttura affidabile dal giorno uno.', tech:'AWS · Docker · CI/CD · Kubernetes' }
+    ];
+    const pillars = [
+      { kicker:'Strategia', title:'Prima la direzione, poi il design', desc:'Definiamo obiettivi, target, funnel e priorita tecniche prima di aprire Figma o l editor.', meta:'Workshop iniziale - scope chiaro - roadmap' },
+      { kicker:'Execution', title:'Visual forte, codice pulito', desc:'Interfacce su misura, contenuti ordinati e sviluppo con attenzione reale a performance, SEO e accessibilita.', meta:'UI system - test - responsive serio' },
+      { kicker:'Rilascio', title:'Consegna senza frizioni', desc:'Deploy, monitoraggio, analytics e supporto post-lancio per evitare il classico sito bello ma fragile.', meta:'CI/CD - analytics - manutenzione' }
+    ];
+    const stackGroups = [
+      { label:'Frontend', items:'React, Next.js, landing ad alte performance, dashboard, aree riservate' },
+      { label:'Commerce', items:'Shopify, WooCommerce, Stripe, cataloghi, checkout e automazioni' },
+      { label:'Backend', items:'Node.js, API REST/GraphQL, database relazionali, integrazioni esterne' },
+      { label:'Mobile', items:'Swift, Kotlin, React Native, interfacce native e flussi business' },
+      { label:'Cloud', items:'AWS, Docker, CI/CD, hosting, monitoraggio, backup e logging' },
+      { label:'Growth', items:'SEO tecnico, tracciamenti, Core Web Vitals, analytics e CRO di base' }
+    ];
+    const engagementSteps = [
+      { n:'01', eyebrow:'Allineamento', title:'Kickoff e direzione', desc:'Allineiamo obiettivi, mappa contenuti, requisiti e priorita operative.', out:'Scope, architettura e piano lavori' },
+      { n:'02', eyebrow:'Interfaccia', title:'Design e prototipo', desc:'Costruiamo interfaccia, tono visivo e prototipo condivisibile per raccogliere feedback presto.', out:'UI approvata e contenuti ordinati' },
+      { n:'03', eyebrow:'Implementazione', title:'Sviluppo e iterazione', desc:'Implementiamo il progetto con review costanti, anteprima live e correzioni rapide.', out:'Build testata e staging online' },
+      { n:'04', eyebrow:'Rilascio', title:'Deploy e supporto', desc:'Mettiamo online, attiviamo tracking e definiamo manutenzione ed evoluzioni.', out:'Rilascio, monitoraggio e handoff' }
     ];
     const carDots = serviceDefs.map((s, i) => ({ i, label: 'Vai a ' + s.title, onClick: () => this.scrollToCard(i) }));
     const cfgMaxTotal = 8000 + cfgAddonDefs.reduce((s, d) => s + d.price, 0);
@@ -1606,6 +1813,7 @@ class Component extends DCLogic {
       estimateLow: fmt(low), estimateHigh: fmt(high),
       estBarPct,
       cfgSummary, mailtoHref,
+      quoteLines, quoteFoot,
       rootStyle: this.buildRootStyle(t),
       isSplit: layout==='split',
       isCentered: layout==='centered',
@@ -1613,6 +1821,9 @@ class Component extends DCLogic {
       themeDots: dots,
       year: '2026',
       services: serviceDefs,
+      pillars,
+      stackGroups,
+      engagementSteps,
       steps: [
         { n:'01', title:'Discovery', desc:'Analisi dei requisiti, definizione dello scope e architettura tecnica.' },
         { n:'02', title:'Design', desc:'Wireframe, interfaccia e prototipo interattivo validato con voi.' },
